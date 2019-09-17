@@ -1,0 +1,49 @@
+%arduino=serial('COM5','BaudRate',9600); % create serial communication object on port COM4
+
+%fopen(arduino);
+
+vid=videoinput('winvideo',1,'MJPG_640x480');
+preview(vid)
+for idx = 1:20
+  %  while(1)
+    pause(2)
+    b = getsnapshot(vid);
+detector = vision.CascadeObjectDetector('eyepairbig');
+detector.MergeThreshold = 7;
+bbox= step(detector,b);
+out= insertObjectAnnotation(b,'rectangle',bbox,'detection');
+g = imcrop(out,bbox);
+imshow(g);
+%rmat=g(:,:,1);
+%figure;
+%imshow(rmat);
+%rmat = im2bw(rmat,50);44
+h=rgb2gray(g);
+figure(2)
+imshow(h);
+i = im2bw(h,0.2800);
+i=imcomplement(i);
+i=imfill(i,'holes');
+conc=strel('disk',10);
+ni=imdilate(i,conc);
+ne=imerode(i,conc);
+%ndiff=imsubtract(ni,ne);
+
+figure(3)
+imshow(i);
+
+i(:);
+numberoftruePixels = sum(i(:));
+disp(numberoftruePixels)
+if (numberoftruePixels < 1000)
+    disp('Driver drowsiness')
+    
+    %fwrite(arduino,'A');
+    
+else if(numberoftruePixels > 1000)
+    disp('Driver conscious')
+     %fwrite(arduino,'B');   
+          
+end;
+end;
+end;
