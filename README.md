@@ -1,0 +1,2 @@
+# Real-Time-Traffic-Control
+This is a proposed system for controlling the traffic light by image processing. The system detects vehicles through images instead of using electronic sensors embedded in the pavement. A camera will be installed alongside the traffic light. It will capture image sequences. The image sequence will then be analysed using digital image processing for vehicle detection, and according to traffic conditions on the road traffic light will be controlled.
